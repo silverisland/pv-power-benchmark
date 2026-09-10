@@ -2,7 +2,7 @@
 
 from .builder import build_task_dataset
 from .integration import initialize_codex_project
-from .protocol import load_benchmark, validate_benchmark, write_benchmark
+from .protocol import load_benchmark, validate_benchmark, write_benchmark, write_presplit_benchmark
 from .scoring import score_benchmark
 from .spec import PROTOCOL_VERSION, TASKS, TaskSpec, get_task_spec
 
@@ -17,4 +17,5 @@ __all__ = [
     "score_benchmark",
     "validate_benchmark",
     "write_benchmark",
+    "write_presplit_benchmark",
 ]

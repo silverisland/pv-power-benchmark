@@ -8,10 +8,13 @@ import pandas as pd
 from pv_benchmark import (
     build_task_dataset,
     initialize_codex_project,
+    load_benchmark,
     score_benchmark,
     validate_benchmark,
     write_benchmark,
+    write_presplit_benchmark,
 )
+from pv_benchmark.cli import _read_parquet_input
 
 
 def source_frame() -> pd.DataFrame:
@@ -39,6 +42,34 @@ def source_frame() -> pd.DataFrame:
 
 
 class BenchmarkProtocolTests(unittest.TestCase):
+    def test_import_presplit_directories_preserves_membership(self):
+        source = source_frame()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            task_splits = {}
+            expected_origins = {}
+            for index, split in enumerate(("train", "validation", "test")):
+                split_dir = root / "source" / split
+                split_dir.mkdir(parents=True)
+                selected = source.loc[source["timestamp_win"].dt.day == index + 1].copy()
+                selected.iloc[:1].to_parquet(split_dir / "part-01.parquet", index=False)
+                selected.iloc[1:].to_parquet(split_dir / "part-02.parquet", index=False)
+                loaded = _read_parquet_input(split_dir)
+                task_splits[split] = build_task_dataset(loaded, "ultra_short")
+                expected_origins[split] = set(loaded["timestamp_win"])
+
+            benchmark_dir = root / "benchmark"
+            manifest = write_presplit_benchmark(
+                task_splits,
+                benchmark_dir,
+                task="ultra_short",
+            )
+            self.assertEqual(manifest["split_policy"]["type"], "predefined")
+            _, written = load_benchmark(benchmark_dir)
+            for split in ("train", "validation", "test"):
+                self.assertEqual(set(written[split]["timestamp_win"]), expected_origins[split])
+                self.assertTrue(written[split]["split"].eq(split).all())
+
     def test_short_term_builder_uses_next_calendar_day(self):
         frame = build_task_dataset(source_frame(), "short_term")
         self.assertTrue(frame["target"].map(len).eq(96).all())

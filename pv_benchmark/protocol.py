@@ -145,6 +145,55 @@ def write_benchmark(
         train_end=train_boundary,
         validation_end=validation_boundary,
     )
+    return _write_splits(
+        splits,
+        output_dir,
+        task=task,
+        split_policy={
+            "type": "forecast_origin_time",
+            "train_end_inclusive": train_boundary.isoformat(),
+            "validation_end_inclusive": validation_boundary.isoformat(),
+            "test_rule": "timestamp_win > validation_end_inclusive",
+        },
+    )
+
+
+def write_presplit_benchmark(
+    splits: dict[str, pd.DataFrame],
+    output_dir: str | Path,
+    *,
+    task: TaskName,
+) -> dict[str, Any]:
+    """Write caller-defined splits without repartitioning their rows."""
+
+    missing = sorted(set(SPLITS) - set(splits))
+    extra = sorted(set(splits) - set(SPLITS))
+    if missing or extra:
+        raise ValueError(f"predefined splits must be exactly {SPLITS}; missing={missing}, extra={extra}")
+    prepared: dict[str, pd.DataFrame] = {}
+    for split in SPLITS:
+        selected = splits[split].copy()
+        selected["split"] = split
+        prepared[split] = selected.sort_values(["timestamp_win", "station"]).reset_index(drop=True)
+    return _write_splits(
+        prepared,
+        output_dir,
+        task=task,
+        split_policy={
+            "type": "predefined",
+            "rule": "train/validation/test source membership preserved exactly",
+        },
+    )
+
+
+def _write_splits(
+    splits: dict[str, pd.DataFrame],
+    output_dir: str | Path,
+    *,
+    task: TaskName,
+    split_policy: dict[str, Any],
+) -> dict[str, Any]:
+    spec = get_task_spec(task)
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
     files: dict[str, dict[str, Any]] = {}
@@ -190,12 +239,7 @@ def write_benchmark(
             },
             "prediction_columns": ["row_id", "prediction", "model_id"],
         },
-        "split_policy": {
-            "type": "forecast_origin_time",
-            "train_end_inclusive": train_boundary.isoformat(),
-            "validation_end_inclusive": validation_boundary.isoformat(),
-            "test_rule": "timestamp_win > validation_end_inclusive",
-        },
+        "split_policy": split_policy,
         "files": files,
     }
     manifest_path = root / MANIFEST_NAME

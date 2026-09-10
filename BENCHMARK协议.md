@@ -190,6 +190,8 @@ pv-benchmark score \
 
 ## 8. 从完整192点数据建立 Benchmark
 
+### 8.1 由完整数据按时间切分
+
 源文件需符合 [数据说明](数据说明.md)，然后分别构造两个任务：
 
 ```bash
@@ -209,6 +211,27 @@ pv-benchmark build \
 ```
 
 短期构造器只选择10:00起报行，并通过实际时间位置截取次日96点，不要求模型项目自行计算数组下标。
+
+### 8.2 导入已经划分好的训练集、验证集和测试集
+
+当三个集合已经固定时，使用 `import-splits`，不要再提供日期边界：
+
+```bash
+pv-benchmark import-splits \
+  --task ultra_short \
+  --train /data/pv/train \
+  --validation /data/pv/validation \
+  --test /data/pv/test \
+  --output-dir /data/benchmarks/pv_v1/ultra_short
+```
+
+`--train`、`--validation` 和 `--test` 均可指向单个 Parquet 文件，或包含多个
+Parquet 文件的目录。目录会被递归读取并按文件名排序合并。输入文件使用相同的完整
+源数据字段格式；命令只构造任务字段，不会改变三个集合的成员关系。
+
+导入时会拒绝空集合、重复 `row_id`、跨集合样本重叠、字段缺失、数组长度错误、非法
+数值和不符合任务起报时间的样本。生成的 `benchmark.json` 中
+`split_policy.type` 为 `predefined`。
 
 ## 9. 版本管理
 
