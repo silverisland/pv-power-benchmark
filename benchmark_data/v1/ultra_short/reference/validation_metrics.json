@@ -1,0 +1,18 @@
+{
+  "protocol_version": "1.0.0",
+  "benchmark_id": "3da8cf0aaecb6b42921fdefe",
+  "task": "ultra_short",
+  "split": "validation",
+  "model_id": "mock_persistence_baseline_v1",
+  "primary_metric": "accuracy",
+  "aggregation": "equal_weight_forecast_origins",
+  "capacity_floor_ratio": 0.2,
+  "samples": 4,
+  "normalized_error": 0.07999998110842323,
+  "accuracy": 0.9200000188915768,
+  "accuracy_percent": 92.00000188915767,
+  "station_macro_accuracy": 0.9200000188915768,
+  "worst_station_accuracy": 0.9200000173455469,
+  "data_sha256": "1c0cc99696888d3c1f9f8befe6440c6990c9d04a2c191ee13c794b3a2001a7fb",
+  "predictions_sha256": "63efc49cd42ea2da3407824fc6ff7b0795273874d4d545d1ae0b02a2f3a90dc7"
+}

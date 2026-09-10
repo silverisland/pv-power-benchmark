@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pv-power-benchmark"
+version = "1.0.0"
+description = "Versioned data contract and metrics for photovoltaic power forecasting"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "pyarrow>=15",
+]
+
+[project.optional-dependencies]
+tabm-demo = [
+  "torch",
+  "scikit-learn",
+  "tabm",
+  "rtdl-num-embeddings",
+]
+
+[project.scripts]
+pv-benchmark = "pv_benchmark.cli:main"
+
+[tool.setuptools]
+py-modules = ["pv_metrics"]
+
+[tool.setuptools.packages.find]
+include = ["pv_benchmark*"]

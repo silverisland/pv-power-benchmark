@@ -1,0 +1,91 @@
+{
+  "protocol_version": "1.0.0",
+  "benchmark_id": "3da8cf0aaecb6b42921fdefe",
+  "task": {
+    "name": "ultra_short",
+    "description": "Continuous four-hour photovoltaic power forecast",
+    "horizon_points": 16,
+    "cadence_minutes": 15,
+    "issue_time": "any_15_minute_boundary",
+    "target_rule": "T0+15min through T0+4h",
+    "metric": "normalized_mae_accuracy",
+    "aggregation": "equal_weight_forecast_origins",
+    "capacity_floor_ratio": 0.2
+  },
+  "schema": {
+    "columns": [
+      "row_id",
+      "task",
+      "split",
+      "timestamp_win",
+      "target_start",
+      "target_end",
+      "station",
+      "capacity",
+      "power_history",
+      "ghi_history",
+      "temperature_history",
+      "ghi_forecast",
+      "temperature_forecast",
+      "wind_speed_forecast",
+      "wind_direction_forecast",
+      "target"
+    ],
+    "array_lengths": {
+      "power_history": 672,
+      "ghi_history": 672,
+      "temperature_history": 672,
+      "ghi_forecast": 16,
+      "temperature_forecast": 16,
+      "wind_speed_forecast": 16,
+      "wind_direction_forecast": 16,
+      "target": 16
+    },
+    "prediction_columns": [
+      "row_id",
+      "prediction",
+      "model_id"
+    ]
+  },
+  "split_policy": {
+    "type": "forecast_origin_time",
+    "train_end_inclusive": "2026-08-01T23:59:59",
+    "validation_end_inclusive": "2026-08-02T23:59:59",
+    "test_rule": "timestamp_win > validation_end_inclusive"
+  },
+  "files": {
+    "train": {
+      "file": "train.parquet",
+      "sha256": "e688e26abe17363ed8c7d1cfcdf3485669bbed13ffb00af864f25b9c6f152c20",
+      "rows": 4,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-01T09:00:00",
+      "origin_end": "2026-08-01T10:00:00"
+    },
+    "validation": {
+      "file": "validation.parquet",
+      "sha256": "1c0cc99696888d3c1f9f8befe6440c6990c9d04a2c191ee13c794b3a2001a7fb",
+      "rows": 4,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-02T09:00:00",
+      "origin_end": "2026-08-02T10:00:00"
+    },
+    "test": {
+      "file": "test.parquet",
+      "sha256": "7bbbc99ebdac552551b28018d4ce946fcf7ad80f7ed932844f90380ecae0d23c",
+      "rows": 4,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-03T09:00:00",
+      "origin_end": "2026-08-03T10:00:00"
+    }
+  }
+}

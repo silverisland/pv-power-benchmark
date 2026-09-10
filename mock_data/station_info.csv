@@ -1,0 +1,3 @@
+plantid,plantname,plant_pointname,province,GCCAPACITY,LONGITUDE,LATITUDE,timezone
+PV001,Mock Solar East,plant_guangfu0001,Guangxi,100.0,108.32,22.82,Asia/Shanghai
+PV002,Mock Solar West,plant_guangfu0002,Guangxi,150.0,109.41,23.12,Asia/Shanghai

@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.1",
+  "generator_seed": 20260910,
+  "timezone": "Asia/Shanghai",
+  "timestamp_storage": "timezone-naive local time",
+  "units": {
+    "power": "MW",
+    "GHI": "W/m2",
+    "TEMP": "degC",
+    "WS": "m/s",
+    "WD": "degree",
+    "PREC": "mm",
+    "PWAT": "mm"
+  },
+  "files": [
+    {
+      "file": "station_info.csv",
+      "rows": 2,
+      "columns": [
+        "plantid",
+        "plantname",
+        "plant_pointname",
+        "province",
+        "GCCAPACITY",
+        "LONGITUDE",
+        "LATITUDE",
+        "timezone"
+      ],
+      "cadence": "static",
+      "array_lengths": {}
+    },
+    {
+      "file": "pv_samples_15min.parquet",
+      "rows": 12,
+      "columns": [
+        "timestamp_win",
+        "station",
+        "cap_power_on",
+        "observe_power",
+        "observe_power_future",
+        "GHI_solargis",
+        "GHI_solargis_future",
+        "TEMP_solargis",
+        "TEMP_solargis_future",
+        "WS_solargis_future",
+        "WD_solargis_future"
+      ],
+      "cadence": "15min",
+      "array_lengths": {
+        "observe_power": 672,
+        "observe_power_future": 192,
+        "GHI_solargis": 672,
+        "GHI_solargis_future": 192,
+        "TEMP_solargis": 672,
+        "TEMP_solargis_future": 192,
+        "WS_solargis_future": 192,
+        "WD_solargis_future": 192
+      }
+    },
+    {
+      "file": "predictions_15min.parquet",
+      "rows": 12,
+      "columns": [
+        "timestamp_win",
+        "station",
+        "model_id",
+        "prediction",
+        "groundtruth",
+        "capacity"
+      ],
+      "cadence": "15min",
+      "array_lengths": {
+        "prediction": 192,
+        "groundtruth": 192
+      }
+    },
+    {
+      "file": "ultra_short_predictions.parquet",
+      "rows": 6,
+      "columns": [
+        "timestamp_win",
+        "target_start",
+        "target_end",
+        "station",
+        "model_id",
+        "prediction",
+        "groundtruth",
+        "capacity"
+      ],
+      "cadence": "15min",
+      "array_lengths": {
+        "prediction": 16,
+        "groundtruth": 16
+      }
+    },
+    {
+      "file": "short_term_predictions.parquet",
+      "rows": 6,
+      "columns": [
+        "timestamp_win",
+        "target_start",
+        "target_end",
+        "station",
+        "model_id",
+        "prediction",
+        "groundtruth",
+        "capacity"
+      ],
+      "cadence": "15min",
+      "array_lengths": {
+        "prediction": 96,
+        "groundtruth": 96
+      }
+    },
+    {
+      "file": "province_delivery.parquet",
+      "rows": 16,
+      "columns": [
+        "dtime",
+        "predict_power_province_guangxi_solar"
+      ],
+      "cadence": "15min",
+      "array_lengths": {}
+    },
+    {
+      "file": "eupv_samples_hourly.parquet",
+      "rows": 6,
+      "columns": [
+        "timestamp",
+        "id",
+        "pv_data",
+        "GHI",
+        "GHI_future1d",
+        "TEMP",
+        "TEMP_future1d",
+        "WS",
+        "WS_future1d",
+        "WD",
+        "WD_future1d",
+        "PREC",
+        "PREC_future1d",
+        "PWAT",
+        "PWAT_future1d"
+      ],
+      "cadence": "1h",
+      "array_lengths": {
+        "GHI_future1d": 24,
+        "TEMP_future1d": 24,
+        "WS_future1d": 24,
+        "WD_future1d": 24,
+        "PREC_future1d": 24,
+        "PWAT_future1d": 24
+      }
+    },
+    {
+      "file": "eupv_predictions_hourly.parquet",
+      "rows": 6,
+      "columns": [
+        "timestamp",
+        "id",
+        "prediction",
+        "groundtruth"
+      ],
+      "cadence": "1h",
+      "array_lengths": {
+        "prediction": 24,
+        "groundtruth": 24
+      }
+    }
+  ]
+}

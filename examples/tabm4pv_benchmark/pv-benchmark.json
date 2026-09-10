@@ -1,0 +1,11 @@
+{
+  "integration_version": "1.0.0",
+  "model_id": "tabm4pv_benchmark_demo",
+  "task": "ultra_short",
+  "benchmark_dir": "../../benchmark_data/v1/ultra_short",
+  "benchmark_id": "3da8cf0aaecb6b42921fdefe",
+  "protocol_version": "1.0.0",
+  "iteration_split": "validation",
+  "final_split": "test",
+  "artifacts_dir": "artifacts/benchmark"
+}

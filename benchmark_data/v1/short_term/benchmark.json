@@ -1,0 +1,91 @@
+{
+  "protocol_version": "1.0.0",
+  "benchmark_id": "eba4f109280e8abf8770138b",
+  "task": {
+    "name": "short_term",
+    "description": "10:00 issue for the whole next calendar day",
+    "horizon_points": 96,
+    "cadence_minutes": 15,
+    "issue_time": "10:00 Asia/Shanghai",
+    "target_rule": "next day 00:00 through 23:45",
+    "metric": "normalized_rmse_accuracy",
+    "aggregation": "equal_weight_forecast_origins",
+    "capacity_floor_ratio": 0.2
+  },
+  "schema": {
+    "columns": [
+      "row_id",
+      "task",
+      "split",
+      "timestamp_win",
+      "target_start",
+      "target_end",
+      "station",
+      "capacity",
+      "power_history",
+      "ghi_history",
+      "temperature_history",
+      "ghi_forecast",
+      "temperature_forecast",
+      "wind_speed_forecast",
+      "wind_direction_forecast",
+      "target"
+    ],
+    "array_lengths": {
+      "power_history": 672,
+      "ghi_history": 672,
+      "temperature_history": 672,
+      "ghi_forecast": 96,
+      "temperature_forecast": 96,
+      "wind_speed_forecast": 96,
+      "wind_direction_forecast": 96,
+      "target": 96
+    },
+    "prediction_columns": [
+      "row_id",
+      "prediction",
+      "model_id"
+    ]
+  },
+  "split_policy": {
+    "type": "forecast_origin_time",
+    "train_end_inclusive": "2026-08-01T23:59:59",
+    "validation_end_inclusive": "2026-08-02T23:59:59",
+    "test_rule": "timestamp_win > validation_end_inclusive"
+  },
+  "files": {
+    "train": {
+      "file": "train.parquet",
+      "sha256": "d52299f43d45703af1bc4655bf7b92567eb5e21cfb6579fca6dfe863198bbb6b",
+      "rows": 2,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-01T10:00:00",
+      "origin_end": "2026-08-01T10:00:00"
+    },
+    "validation": {
+      "file": "validation.parquet",
+      "sha256": "a2ac0f76fcd6736dbdfdc03a43b1304449bb7b9473b074afd567e72243070983",
+      "rows": 2,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-02T10:00:00",
+      "origin_end": "2026-08-02T10:00:00"
+    },
+    "test": {
+      "file": "test.parquet",
+      "sha256": "c1a5554edb5cb544c9cf9ef10e7e50d5e4de7da2f38a260737e52cfd41ad19cd",
+      "rows": 2,
+      "stations": [
+        "PV001",
+        "PV002"
+      ],
+      "origin_start": "2026-08-03T10:00:00",
+      "origin_end": "2026-08-03T10:00:00"
+    }
+  }
+}

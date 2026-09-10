@@ -1,0 +1,21 @@
+{
+  "seed": 0,
+  "history_length": 96,
+  "label_scale": 500.0,
+  "prediction_clip_lower": 0.0,
+  "prediction_clip_upper": 465.0,
+  "learning_rate": 0.002,
+  "weight_decay": 0.0003,
+  "gradient_clipping_norm": 1.0,
+  "epochs": 200,
+  "patience": 10,
+  "batch_size": 512,
+  "inference_batch_size": 512,
+  "noise_std": 0.00001,
+  "n_blocks": 2,
+  "d_block": 512,
+  "dropout": 0.1,
+  "k": 32,
+  "embedding_dim": 32,
+  "device": "auto"
+}
